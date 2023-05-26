@@ -1,21 +1,36 @@
-const path = require('path'); // https://nodejs.org/api/os.html
-const Logger = require('./logger');
-const logger = new Logger();
+require('dotenv').config()
+require('express-async-errors')
 
-console.log(path.sep);
+const express = require('express')
+const app = express()
 
-const filePath = path.join('/content/', '/subfolder/', '/file.ext');
-console.log(filePath);
+const dogsRouter = require('./routes/dogs')
+const connectDB = require('./db/connect')
+require('dotenv').config()
+const notFound = require('./middleware/not-found')
+const errorHandlerMiddleware = require('./middleware/error-handler')
 
-const base = path.basename(filePath);
-console.log(base);
+const port = process.env.PORT || 3001
 
-// emitter.on('messageLogged', function(eventArg){
-logger.on('messageLogged', (eventArg) => { // The same
-    console.log('Listener called', eventArg);
-});
+// To receive Json through APIs
+app.use(express.json())
+// Reference static files
+app.use(express.static('./public'))
 
-logger.log('message test');
-// setInterval(() => {
-//     console.log('Hello there');
-// }, 10000);
+
+// Routes
+app.use('/api/v1/dogs', dogsRouter)
+
+app.use(notFound)
+app.use(errorHandlerMiddleware)
+
+const start = async() => {
+    try {
+        await connectDB(process.env.MONGODB_URI)
+        app.listen(port, console.log(`server is listening on port ${port}...`))
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+start()
