@@ -8,7 +8,7 @@ const dogsRouter = require('./routes/dogs')
 const catsRouter = require('./routes/cats')
 const { deleteAllCats } = require('./controllers/cats')
 
-const connectDB = require('./db/connect')
+const connectMongo = require('./db/mongoConnect')
 
 const notFound = require('./middleware/not-found')
 const errorHandlerMiddleware = require('./middleware/error-handler')
@@ -31,7 +31,7 @@ app.use(errorHandlerMiddleware)
 
 const start = async() => {
     try {
-        await connectDB(process.env.MONGODB_URI)
+        await connectMongo(process.env.MONGODB_URI)
         app.listen(port, console.log(`server is listening on port ${port}...`))
     } catch (error) {
         console.log(error)
