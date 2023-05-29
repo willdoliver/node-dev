@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+    mysql:
+        image: mysql:latest
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: node-project
+            MYSQL_USER: admin
+            MYSQL_PASSWORD: admin
+        volumes:
+            - data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+
+    # mongo:
+    #     image: mongo:4.4
+    #     ports:
+    #         - "27017:27017"
+    #     volumes:
+    #         - "./mongo-entrypoint/:/docker-entrypoint-initdb.d/"
+    #     command: mongod 
+
+volumes:
+    data:

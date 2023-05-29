@@ -8,7 +8,7 @@ const DogSchema = new mongoose.Schema({
         maxlength: [20, 'name cannot be more then 20 chars']
     },
     race: {
-        type: Races,
+        type: String,
         enum: [
             'Viralata',
             'Pitbull',

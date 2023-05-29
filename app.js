@@ -5,8 +5,11 @@ const express = require('express')
 const app = express()
 
 const dogsRouter = require('./routes/dogs')
+const catsRouter = require('./routes/cats')
+const { deleteAllCats } = require('./controllers/cats')
+
 const connectDB = require('./db/connect')
-require('dotenv').config()
+
 const notFound = require('./middleware/not-found')
 const errorHandlerMiddleware = require('./middleware/error-handler')
 
@@ -20,6 +23,8 @@ app.use(express.static('./public'))
 
 // Routes
 app.use('/api/v1/dogs', dogsRouter)
+app.use('/api/v1/cats', catsRouter)
+app.use('/api/v1/delete-cats', deleteAllCats)
 
 app.use(notFound)
 app.use(errorHandlerMiddleware)
